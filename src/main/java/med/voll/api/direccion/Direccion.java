@@ -9,17 +9,34 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
+//@NoArgsConstructor // se comento debido a que por algun motivo la creación del constructor vacio por medio de lombok no funciona
 @AllArgsConstructor
 @Embeddable
 public class Direccion {
 
-   private Long id;
    private String calle;
    private String numero;
    private String complemento;
    private String barrio;
+   private String ciudad;
    private String codigo_postal;
    private String estado;
 
+   public Direccion() {
+
+
+
+   }
+
+   public Direccion(DatosDireccion datosDireccion) {
+      this.calle = datosDireccion.calle();
+      this.numero = datosDireccion.numero();
+      this.complemento = datosDireccion.complemento();
+      this.barrio = datosDireccion.barrio();
+      this.ciudad = datosDireccion.ciudad();
+      this.codigo_postal = datosDireccion.codigo_postal();
+      this.estado = datosDireccion.estado();
+
+
+   }
 }
