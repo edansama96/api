@@ -6,6 +6,8 @@ import med.voll.api.medico.DatosRegistroMedico;
 import med.voll.api.medico.Medico;
 import med.voll.api.medico.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,10 +35,14 @@ public class MedicoController {
     }
 
     //Método para listar los médicos
+    //Ya no se utilizara el Lista para  manejar la infromación
+    // debido a que ahora lo que se hara es usar Pageable
+    // lo que hace que se devuelva un elemento de Tipo page
+    // el cual tendra la lista de la información y la dividira en páginas
     @GetMapping
-    public List<DatosListaMedico> listarMedicos(){
+    public Page<DatosListaMedico> listarMedicos(Pageable paginacion){
 
-        return repository.findAll().stream().map( DatosListaMedico:: new).toList();
+        return repository.findAll(paginacion).stream().map( DatosListaMedico:: new).toList();
     }
 
 
