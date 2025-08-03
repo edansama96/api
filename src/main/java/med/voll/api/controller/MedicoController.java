@@ -39,10 +39,12 @@ public class MedicoController {
     // debido a que ahora lo que se hara es usar Pageable
     // lo que hace que se devuelva un elemento de Tipo page
     // el cual tendra la lista de la información y la dividira en páginas
+    // se quito el tolist por que ya no se devuelve dicha información
+    // y page tiene problemas con stream no funciona
     @GetMapping
     public Page<DatosListaMedico> listarMedicos(Pageable paginacion){
 
-        return repository.findAll(paginacion).stream().map( DatosListaMedico:: new).toList();
+        return repository.findAll(paginacion).map( DatosListaMedico:: new);
     }
 
 

@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+//@Getter
+//@Setter
 //@NoArgsConstructor // se comento debido a que por algun motivo la creación del constructor vacio por medio de lombok no funciona
 @AllArgsConstructor
 @Embeddable
@@ -38,5 +38,61 @@ public class Direccion {
       this.estado = datosDireccion.estado();
 
 
+   }
+
+   public String getCalle() {
+      return calle;
+   }
+
+   public void setCalle(String calle) {
+      this.calle = calle;
+   }
+
+   public String getNumero() {
+      return numero;
+   }
+
+   public void setNumero(String numero) {
+      this.numero = numero;
+   }
+
+   public String getComplemento() {
+      return complemento;
+   }
+
+   public void setComplemento(String complemento) {
+      this.complemento = complemento;
+   }
+
+   public String getBarrio() {
+      return barrio;
+   }
+
+   public void setBarrio(String barrio) {
+      this.barrio = barrio;
+   }
+
+   public String getCiudad() {
+      return ciudad;
+   }
+
+   public void setCiudad(String ciudad) {
+      this.ciudad = ciudad;
+   }
+
+   public String getCodigo_postal() {
+      return codigo_postal;
+   }
+
+   public void setCodigo_postal(String codigo_postal) {
+      this.codigo_postal = codigo_postal;
+   }
+
+   public String getEstado() {
+      return estado;
+   }
+
+   public void setEstado(String estado) {
+      this.estado = estado;
    }
 }

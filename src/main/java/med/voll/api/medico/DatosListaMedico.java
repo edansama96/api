@@ -8,11 +8,29 @@ public record DatosListaMedico(
         String nombre,
         String email,
         String documento,
-        Especialidad especialidad
+        Especialidad especialidad,
+        String calle,
+        String numero,
+        String complemento,
+        String barrio,
+        String ciudad,
+        String codigo_postal,
+        String estado
 ) {
 
     public DatosListaMedico(Medico medico) {
-        this(medico.getNombre(), medico.getEmail(), medico.getDocumento(), medico.getEspecialidad());
+        this(
+                medico.getNombre(),
+                medico.getEmail(),
+                medico.getDocumento(),
+                medico.getEspecialidad(),
+                medico.getDireccion().getCalle(),
+                medico.getDireccion().getNumero(),
+                medico.getDireccion().getComplemento(),
+                medico.getDireccion().getBarrio(),
+                medico.getDireccion().getCiudad(),
+                medico.getDireccion().getCodigo_postal(),
+                medico.getDireccion().getEstado());
     }
 
 }
