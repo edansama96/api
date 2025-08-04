@@ -8,6 +8,7 @@ import med.voll.api.medico.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +43,7 @@ public class MedicoController {
     // se quito el tolist por que ya no se devuelve dicha información
     // y page tiene problemas con stream no funciona
     @GetMapping
-    public Page<DatosListaMedico> listarMedicos(Pageable paginacion){
+    public Page<DatosListaMedico> listarMedicos(@PageableDefault(size = 10,sort ={"nombre"}) Pageable paginacion){
 
         return repository.findAll(paginacion).map( DatosListaMedico:: new);
     }
