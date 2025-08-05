@@ -1,10 +1,7 @@
 package med.voll.api.controller;
 
 import jakarta.validation.Valid;
-import med.voll.api.medico.DatosListaMedico;
-import med.voll.api.medico.DatosRegistroMedico;
-import med.voll.api.medico.Medico;
-import med.voll.api.medico.MedicoRepository;
+import med.voll.api.medico.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,5 +45,14 @@ public class MedicoController {
         return repository.findAll(paginacion).map( DatosListaMedico:: new);
     }
 
+    //Método para actualizar algunos elmentos
+    @Transactional
+    @PutMapping
+    public void acrtualizaMedico(@RequestBody @Valid DatosActualizacinMedico datos){
+            //Obtener el medico por id
+        var medico = repository.getReferenceById(datos.id());
+        medico.actualizarInformaciones(datos);
+
+    }
 
 }

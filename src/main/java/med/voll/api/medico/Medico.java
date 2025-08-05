@@ -1,6 +1,7 @@
 package med.voll.api.medico;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.*;
 import med.voll.api.direccion.Direccion;
 
@@ -99,4 +100,22 @@ public class Medico {
         this.direccion = direccion;
     }
 
+    //Método para actualziar la información
+    public void actualizarInformaciones(@Valid DatosActualizacinMedico datos) {
+        if(datos.nombre() != null){
+            this.nombre = datos.nombre();
+
+        }
+        if(datos.telefono() != null){
+            this.telefono = datos.telefono();
+
+        }
+        if(datos.direccion() != null){
+            this.direccion.actualizarDireccion(datos.direccion());
+
+        }
+
+
+
+    }
 }

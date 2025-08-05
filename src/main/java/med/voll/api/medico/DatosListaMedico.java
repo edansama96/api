@@ -5,6 +5,7 @@ package med.voll.api.medico;
 
 //Nuevo DTO para realizar la lista de los médicos
 public record DatosListaMedico(
+        Long id,
         String nombre,
         String email,
         String documento,
@@ -20,6 +21,7 @@ public record DatosListaMedico(
 
     public DatosListaMedico(Medico medico) {
         this(
+                medico.getId(),
                 medico.getNombre(),
                 medico.getEmail(),
                 medico.getDocumento(),
