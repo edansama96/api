@@ -48,7 +48,7 @@ public class MedicoController {
     //Método para actualizar algunos elmentos
     @Transactional
     @PutMapping
-    public void acrtualizaMedico(@RequestBody @Valid DatosActualizacinMedico datos){
+    public void actualizaMedico(@RequestBody @Valid DatosActualizacinMedico datos){
             //Obtener el medico por id
         var medico = repository.getReferenceById(datos.id());
         medico.actualizarInformaciones(datos);

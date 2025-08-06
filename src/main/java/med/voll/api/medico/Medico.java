@@ -101,7 +101,7 @@ public class Medico {
     }
 
     //Método para actualziar la información
-    public void actualizarInformaciones(@Valid DatosActualizacinMedico datos) {
+    public void  actualizarInformaciones(@Valid DatosActualizacinMedico datos) {
         if(datos.nombre() != null){
             this.nombre = datos.nombre();
 
