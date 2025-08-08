@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,12 +61,13 @@ public class MedicoController {
     @DeleteMapping("/{id}")
     //Se cambiara el void debido a que este siempre devuelve un código 200 ok
     // por la calse ResponseEntity que devuleve otro tipo de códigos http
-    public void eliminarMedico(@PathVariable Long id){
+    public ResponseEntity eliminarMedico(@PathVariable Long id){
         //Eliminar el elemento de la base de datos
        //repository.deleteById(id);
         var medico = repository.getReferenceById(id);
             medico.eliminarMedico();
-
+            // Se observara la nueva respuesta a recibir
+        return ResponseEntity.noContent().build();
     }
 
 
