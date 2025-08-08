@@ -58,9 +58,11 @@ public class MedicoController {
     //Método para eliminar un medico o deshabilitar de la base para este caso
     @Transactional
     @DeleteMapping("/{id}")
+    //Se cambiara el void debido a que este siempre devuelve un código 200 ok
+    // por la calse ResponseEntity que devuleve otro tipo de códigos http
     public void eliminarMedico(@PathVariable Long id){
         //Eliminar el elemento de la base de datos
-//        repository.deleteById(id);
+       //repository.deleteById(id);
         var medico = repository.getReferenceById(id);
             medico.eliminarMedico();
 
