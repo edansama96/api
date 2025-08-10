@@ -45,6 +45,14 @@ public class PacienteController {
         return ResponseEntity.ok(paciente);
     }
 
+    //Método para buscar Paciente por id
+    @GetMapping("/{id}")
+    public ResponseEntity detallePaciente(@PathVariable Long id){
+        var paciente = repository.getReferenceById(id);
+        return  ResponseEntity.ok(new DatosDetallePaciente(paciente));
+    }
+
+
     //Método para actualizar información del paciente
     @Transactional
     @PutMapping

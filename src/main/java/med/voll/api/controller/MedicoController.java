@@ -54,6 +54,14 @@ public class MedicoController {
         return ResponseEntity.ok(page);
     }
 
+    //Método para buscar por id medicos
+
+    @GetMapping("/{id}")
+    public ResponseEntity detallarMedico(@PathVariable Long id){
+    var medico = repository.getReferenceById(id);
+     return  ResponseEntity.ok(new DatosDetalleMedico( medico));
+    }
+
     //Método para actualizar algunos elmentos
     @Transactional
     @PutMapping
