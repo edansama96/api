@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -28,9 +29,14 @@ public class MedicoController {
     //anotación para indicar que se registraran los medicos
     @PostMapping
     //Proceso para recibir los datos
-    public void registrar(@RequestBody @Valid DatosRegistroMedico datos) {
-        repository.save(new Medico(datos));
-
+    public ResponseEntity registrar(@RequestBody @Valid DatosRegistroMedico datos, UriComponentsBuilder uriComponentsBuilder) {
+     var medico = new Medico(datos);
+     repository.save(medico);
+        //Se establece el uso de la instnacia de la clase  UriComponentsBuilder para entender y usar ciertos datos del servidor
+     var uri = uriComponentsBuilder.path("/medicos/{id}").buildAndExpand(medico.getId()).toUri();
+     //De vovler el código, el body y el header location, cuando se devuelve los elmenetos
+        //no se devuelve un jpa si no un dto
+     return  ResponseEntity.created(uri).body(new DatosDetalleMedico(medico));
     }
 
     //Método para listar los médicos
@@ -41,19 +47,21 @@ public class MedicoController {
     // se quito el tolist por que ya no se devuelve dicha información
     // y page tiene problemas con stream no funciona
     @GetMapping
-    public Page<DatosListaMedico> listarMedicos(@PageableDefault(size = 10,sort ={"nombre"}) Pageable paginacion){
+    public ResponseEntity<Page<DatosListaMedico>> listarMedicos(@PageableDefault(size = 10,sort ={"nombre"}) Pageable paginacion){
 
-        return repository.findAllByActivoTrue(paginacion).map(DatosListaMedico::new);
+        var page = repository.findAllByActivoTrue(paginacion).map(DatosListaMedico::new);
+
+        return ResponseEntity.ok(page);
     }
 
     //Método para actualizar algunos elmentos
     @Transactional
     @PutMapping
-    public void actualizaMedico(@RequestBody @Valid DatosActualizacinMedico datos){
+    public ResponseEntity actualizaMedico(@RequestBody @Valid DatosActualizacinMedico datos){
             //Obtener el medico por id
         var medico = repository.getReferenceById(datos.id());
         medico.actualizarInformaciones(datos);
-
+        return ResponseEntity.ok(new DatosDetalleMedico(medico));
     }
 
     //Método para eliminar un medico o deshabilitar de la base para este caso

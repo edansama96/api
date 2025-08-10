@@ -3,6 +3,7 @@ package med.voll.api.paciente;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.*;
+import med.voll.api.direccion.DatosDireccion;
 import med.voll.api.direccion.Direccion;
 
 @Setter

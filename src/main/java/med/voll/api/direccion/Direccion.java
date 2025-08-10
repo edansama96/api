@@ -25,7 +25,6 @@ public class Direccion {
    public Direccion() {
 
 
-
    }
 
    public Direccion(DatosDireccion datosDireccion) {
