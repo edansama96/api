@@ -1,50 +1,45 @@
-package med.voll.api.medico;
+package med.voll.api.domain.paciente;
 
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.*;
-import med.voll.api.direccion.Direccion;
+import med.voll.api.domain.direccion.Direccion;
 
-
-//@Getter
 @Setter
+@Getter
+@EqualsAndHashCode(of = "id")
 //@NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
-@Entity(name = "Medico")
-@Table(name = "medicos")
-public class Medico {
+@Entity(name = "Paciente")
+@Table(name = "pacientes")
+public class Paciente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private boolean activo;
     private String nombre;
     private String email;
-    private String documento;
+    private String documento_identidad;
     private String telefono;
-
-    @Enumerated(EnumType.STRING)
-    private Especialidad especialidad;
 
     @Embedded
     private Direccion direccion;
 
-    //Constructor sin argumentos necesario para usar hibernate
-    public Medico() {
+
+    public Paciente() {
 
     }
 
-    public Medico(DatosRegistroMedico datos) {
-        this.id = null;
+    public Paciente(DatosRegistroPaciente datos) {
         this.activo = true;
         this.nombre = datos.nombre();
         this.email = datos.email();
         this.telefono = datos.telefono();
-        this.documento = datos.documento();
-        this.especialidad = datos.especialidad();
+        this.documento_identidad = datos.documento_identidad();
         this.direccion = new Direccion(datos.direccion());
-
     }
+
+
 
     public Long getId() {
         return id;
@@ -70,12 +65,12 @@ public class Medico {
         this.email = email;
     }
 
-    public String getDocumento() {
-        return documento;
+    public String getDocumento_identidad() {
+        return documento_identidad;
     }
 
-    public void setDocumento(String documento) {
-        this.documento = documento;
+    public void setDocumento_identidad(String documento_identidad) {
+        this.documento_identidad = documento_identidad;
     }
 
     public String getTelefono() {
@@ -84,14 +79,6 @@ public class Medico {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
-    }
-
-    public Especialidad getEspecialidad() {
-        return especialidad;
-    }
-
-    public void setEspecialidad(Especialidad especialidad) {
-        this.especialidad = especialidad;
     }
 
     public Direccion getDireccion() {
@@ -110,18 +97,17 @@ public class Medico {
         this.activo = activo;
     }
 
-    //Método para actualziar la información
-    public void  actualizarInformaciones(@Valid DatosActualizacinMedico datos) {
+    public void actualizarInformacion(@Valid DatosActualizacionPaciente datos) {
         if(datos.nombre() != null){
             this.nombre = datos.nombre();
-
         }
+
         if(datos.telefono() != null){
             this.telefono = datos.telefono();
-
         }
+
         if(datos.direccion() != null){
-            this.direccion.actualizarDireccion(datos.direccion());
+            this.direccion = new Direccion(datos.direccion());
 
         }
 
@@ -129,7 +115,11 @@ public class Medico {
 
     }
 
-    public void eliminarMedico() {
+
+    public void desactivarPaciente() {
         this.activo = false;
+
     }
 }
+
+
