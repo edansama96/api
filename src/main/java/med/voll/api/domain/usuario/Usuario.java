@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
-@AllArgsConstructor
+//@AllArgsConstructor
 @Entity(name = "Usuario")
 @Table(name = "usuarios")
 public class Usuario implements UserDetails {
@@ -22,6 +22,31 @@ public class Usuario implements UserDetails {
     private Long id;
     private String login;
     private String contrasena;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -2,6 +2,9 @@ package med.voll.api.controller;
 
 import jakarta.validation.Valid;
 import med.voll.api.domain.usuario.DatosAutenticacion;
+import med.voll.api.domain.usuario.Usuario;
+import med.voll.api.infra.security.DatosTokenJWT;
+import med.voll.api.infra.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +32,10 @@ public class AutenticationController {
      * de procesar la autenticación. Verifica las credenciales recibidas usando
      * los proveedores configurados (UserDetailsService, autenticación en BD, etc.).
      */
+
+    //mienbro del token service instnacias de Token service
+    @Autowired
+    private TokenService tokenService;
     //Para la validación y busqueda de que el usaurio este en la base de datos
     //se usara una clase de Spring security para realizar esto
     @Autowired
@@ -47,17 +54,20 @@ public class AutenticationController {
         // 1️⃣ Se crea un token de autenticación con el usuario y contraseña enviados.
         //    Este token NO es un JWT todavía, es una clase interna de Spring Security
         //    que encapsula las credenciales para que AuthenticationManager las procese.
-        var token = new UsernamePasswordAuthenticationToken(datos.login(),datos.contrasena());
+        var authenticationToken = new UsernamePasswordAuthenticationToken(datos.login(),datos.contrasena());
 
         // 2️⃣ Se envía el token al AuthenticationManager para autenticarlo.
         //    Aquí Spring Security buscará el usuario en la BD y validará la contraseña.
         //Se crea una varaible para guardar la información manejado por medio de la instancia
-        var autenticacion = manager.authenticate(token);
+        var autenticacion = manager.authenticate(authenticationToken);
         // 3️⃣ Si llega aquí sin excepción, significa que las credenciales son correctas.
         //    Por ahora solo respondemos con 200 OK, pero en un sistema real devolveríamos
         //    un JWT o algún otro token de sesión para el cliente.
 
-        return  ResponseEntity.ok().build();
+        //variable para el manejo de la creación del token y manejar una clase dto con esa información
+        var tokenJWT = tokenService.generarToken((Usuario) autenticacion.getPrincipal());
+        //se devuelve el token por medio de una clase DTO
+        return  ResponseEntity.ok(new DatosTokenJWT(tokenJWT));
 
     }
 }
