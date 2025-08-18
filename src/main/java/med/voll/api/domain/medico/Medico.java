@@ -130,6 +130,7 @@ public class Medico {
     }
 
     public void eliminarMedico() {
+
         this.activo = false;
     }
 }
