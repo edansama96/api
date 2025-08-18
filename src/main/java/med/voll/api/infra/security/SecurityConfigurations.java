@@ -1,8 +1,10 @@
 package med.voll.api.infra.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Clase de configuración para personalizar el comportamiento de Spring Security.
@@ -34,6 +37,9 @@ public class SecurityConfigurations {
      * @throws Exception Si ocurre un error durante la configuración.
      */
 
+//Instancia para establecer el orden de los filtros
+    @Autowired
+    private SecurityFilter securityFilter;
     //Se crea un método para sacar las confirudaciones por defecto de
     //spring security
     //Anotación para que la clase Security se carge e indiqué a spring que la puede utilizar
@@ -47,6 +53,15 @@ public class SecurityConfigurations {
                 //    Esto significa que Spring Security NO almacenará el estado de la sesión entre peticiones.
                 //    Es ideal para APIs donde cada petición lleva sus credenciales (por ejemplo, un token en el header).
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                //url disponibles y cuales no dependiendo del usauri
+                .authorizeHttpRequests(requ -> {
+                    //por medio de una lambda se indica que post tiene acceso para intentar ingresar
+                    requ.requestMatchers(HttpMethod.POST, "/login").permitAll();
+                    //se bloquear las otras rutas o uris a menos que este autenticado
+                    requ.anyRequest().authenticated();
+                })
+                //Se indicara que primero se use el filtro que se creo y después se use el otro filtro creado por spring
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 // 🔹 Construye y retorna el SecurityFilterChain final.
                 .build();
 
