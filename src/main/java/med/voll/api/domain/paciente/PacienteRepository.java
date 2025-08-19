@@ -15,6 +15,8 @@ public interface PacienteRepository extends JpaRepository<Paciente,Long> {
 
     Optional<Paciente> findByIdAndActivoTrue(@NotNull Long id);
 
+
+
 //    //Método para buscar por id y que el paciente se encuentre activo
 //    Optional<Paciente> findByIdAndByActivoTrue(@NotNull Long id);
 }

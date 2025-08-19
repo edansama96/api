@@ -35,6 +35,12 @@ public class GestorDeErrores {
         }
     }
 
+    //Error de validación exception
+    @ExceptionHandler(ValidacionException.class)
+    public ResponseEntity tratarErrorDeValidacion(ValidacionException e){
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
 
 
 }

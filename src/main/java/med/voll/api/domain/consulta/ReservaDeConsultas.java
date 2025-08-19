@@ -1,11 +1,15 @@
 package med.voll.api.domain.consulta;
 
+
+import med.voll.api.domain.consulta.validaciones.ValidadorDeConsultas;
 import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.PacienteRepository;
 import med.voll.api.infra.exceptions.ValidacionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ReservaDeConsultas {
@@ -17,6 +21,9 @@ public class ReservaDeConsultas {
 
     @Autowired
     private ConsultaRepository consultaRepository;
+    //Inyección de las lista de los métodos a validar al usar un interface con el método validar
+    @Autowired
+    private List<ValidadorDeConsultas> validadores;
 
     public void reservar(DatosReservaConsulta datos){
 
@@ -27,8 +34,15 @@ public class ReservaDeConsultas {
         if(datos.idMedico() != null && !medicoRepository.existsById(datos.idMedico())){
             throw new ValidacionException("No existe un médico con el id informado");
         }
+        //Validación
+        validadores.forEach(v ->v.validar(datos));
+
+
 
         var medico = elegirMedico(datos);
+        if(medico == null){
+            throw new ValidacionException("No existe un médico disponible en ese horario");
+        }
         var paciente = pacienteRepository.findById(datos.idPaciente()).get();
         var consulta = new Consulta(null, medico, paciente, datos.fecha());
         consultaRepository.save(consulta);

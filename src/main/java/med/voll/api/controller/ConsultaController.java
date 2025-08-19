@@ -22,7 +22,6 @@ public class ConsultaController {
     @PostMapping
     @Transactional
     public ResponseEntity reservar(@RequestBody @Valid DatosReservaConsulta datos) {
-
         reserva.reservar(datos);
 
         return ResponseEntity.ok(new DatosDetalleConsulta(null, null, null, null));
